@@ -17,6 +17,10 @@ import RegisterScreen from './screens/RegisterScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import StoreScreen from './screens/StoreScreen.jsx';
+import RepairScreen from './screens/RepairScreen.jsx';
+import AutoReclaimScreen from './screens/AutoReclaimScreen.jsx';
+import ClaimsTreatmentScreen from './screens/ClaimsTreatmentScreen.jsx';
+import LandingScreen from './screens/LandingScreen.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +31,10 @@ const router = createBrowserRouter(
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<ProfileScreen />} />
         <Route path='/store' element={<StoreScreen />} />
+        <Route path='/repair' element={<RepairScreen />} />
+        <Route path='/auto_claim' element={<AutoReclaimScreen />} />
+        <Route path='/claims_treatment' element={<ClaimsTreatmentScreen />} />
+        <Route path='/landing' element={<LandingScreen />} />
       </Route>
     </Route>
   )

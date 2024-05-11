@@ -21,7 +21,11 @@ const userSchema = mongoose.Schema(
       required: true,
       enum: ['client', 'repair_agent', 'insurance_agent'],
       //default: 'client',
-    }
+    },
+    has_bought: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

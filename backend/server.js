@@ -9,13 +9,21 @@ import userRoutes from './routes/userRoutes.js';
 import productCategoryRoutes from './routes/productCategoryRoutes.js';
 import cors from 'cors';
 
-
 const port = process.env.PORT || 5000;
 
 connectDB();
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000', // Frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Enable credentials (cookies, authorization headers, etc)
+  optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,9 +46,7 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running....');
   });
 }
-app.use(cors({
-  origin: "*"
-}))
+
 app.use(notFound);
 app.use(errorHandler);
 

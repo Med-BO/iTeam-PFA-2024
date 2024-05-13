@@ -22,6 +22,7 @@ import AutoReclaimScreen from './screens/AutoReclaimScreen.jsx';
 import ClaimsTreatmentScreen from './screens/ClaimsTreatmentScreen.jsx';
 import LandingScreen from './screens/LandingScreen.jsx';
 
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>

@@ -8,6 +8,8 @@ import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { useUpdateUserMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
+import { ProductCategory } from '../components/ProductCategory';
+
 
 const StoreScreen = () => {
   const [email, setEmail] = useState('');
@@ -47,7 +49,7 @@ const StoreScreen = () => {
     }
   };
   return (
-    <div></div>
+    <div > <ProductCategory/> </div>
   );
 };
 

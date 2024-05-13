@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import Product from './productModel';
-import ProductClaim from './productClaimModel';
 
 const repairProcedureSchema = mongoose.Schema(
   {

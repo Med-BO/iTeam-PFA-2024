@@ -6,6 +6,9 @@ import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/userRoutes.js';
+import productCategoryRoutes from './routes/productCategoryRoutes.js';
+import cors from 'cors';
+
 
 const port = process.env.PORT || 5000;
 
@@ -13,12 +16,15 @@ connectDB();
 
 const app = express();
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
+app.use('/api/category', productCategoryRoutes);
+
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
@@ -32,7 +38,9 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running....');
   });
 }
-
+app.use(cors({
+  origin: "*"
+}))
 app.use(notFound);
 app.use(errorHandler);
 

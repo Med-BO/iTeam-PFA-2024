@@ -1,21 +1,20 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 // import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import FormContainer from '../components/FormContainer';
-import { toast } from 'react-toastify';
-import Loader from '../components/Loader';
-import { useUpdateUserMutation } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
-import { ProductCategory } from '../components/ProductCategory';
-
+import { Form, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import FormContainer from "../components/FormContainer";
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
+import { useUpdateUserMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/authSlice";
+import { ProductCategory } from "../components/ProductCategory";
 
 const StoreScreen = () => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const dispatch = useDispatch();
 
@@ -31,7 +30,7 @@ const StoreScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
     } else {
       try {
         const res = await updateProfile({
@@ -42,14 +41,17 @@ const StoreScreen = () => {
         }).unwrap();
         console.log(res);
         dispatch(setCredentials(res));
-        toast.success('Profile updated successfully');
+        toast.success("Profile updated successfully");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
     }
   };
   return (
-    <div > <ProductCategory/> </div>
+    <div>
+      {" "}
+      <ProductCategory />{" "}
+    </div>
   );
 };
 

@@ -45,8 +45,18 @@ const Product = ({}) => {
           <div key={index} className="card">
             <img src={item.image} alt="Card Image" className="card-img" />
             <h1 className="card-name">{item.name}</h1>
-            <p className="card-description">{item.price}</p>
-            <p className="card-description">{item.stock_quantity}</p>
+            <p className="card-description"> price :{item.price}</p>
+            <div>
+  stock quantity: {item ? (
+    <span className={`card-description-stock ${item.stock_quantity > 0 ? 'green' : 'red'}`}>
+      {item.stock_quantity > 0 ? item.stock_quantity : 'Hors stock'}
+    </span>
+  ) : (
+    <span className="card-description-stock red">hors stock</span>
+  )}
+</div>
+
+
             <a className="card-button">Buy</a>
           </div>
         ))}

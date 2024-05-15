@@ -19,6 +19,36 @@
   max-width: 100%;
 }
 
+.stock-square {
+  display: inline-block;
+  text-align: center;
+  line-height: 20px;
+  font-weight: bold;
+  border-radius: 20%;
+  padding-left: 8px;
+  padding-right: 4px;
+  border-radius: 20px;
+}
+
+.green {
+  padding-right: 4px;
+  padding-left: 4px;
+  border-radius: 10px;
+  background-color: green;
+  color: white;
+}
+
+.red {
+  padding-right: 4px;
+  padding-left: 4px;
+  border-radius: 10px;
+  background-color: red;
+  color: white;
+}
+
+
+
+
 .card-name {
   font-size: 1.2em;
   margin-top: 10px;

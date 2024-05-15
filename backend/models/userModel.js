@@ -26,6 +26,12 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    insurance_email: {
+      type: String,
+    },
+    insurance_password: {
+      type: String,
+    },
   },
   {
     timestamps: true,

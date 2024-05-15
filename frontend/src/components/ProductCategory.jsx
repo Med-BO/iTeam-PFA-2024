@@ -11,10 +11,10 @@ export const ProductCategory = () => {
     getproductCategory();
   }, []);
 
-  const navigateToProductsScreen = (categoryId) => {
+  const navigateToProductsScreen = (categoryId, categoryName) => {
     navigate("product", { state: {
       categoryId: categoryId,
-      //
+      categoryName: categoryName
     } });
   }
 
@@ -39,7 +39,7 @@ export const ProductCategory = () => {
           <img src={item.image} alt="Card Image" className="card-img" />
           <h1 className="card-name">{item.name}</h1>
           <p className="card-description">{item.description}</p>
-          <button className="card-button" onClick={() => navigateToProductsScreen(item._id)}>
+          <button className="card-button" onClick={() => navigateToProductsScreen(item._id, item.name)}>
             See Products
           </button>
         </div>

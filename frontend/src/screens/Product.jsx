@@ -12,10 +12,13 @@ const Product = ({}) => {
   // here we receive the sent value from the precedent screen
   const { state } = useLocation();
   const categoryIdRef = useRef("");
+  const categoryNameRef = useRef("");
 
   useEffect(() => {
     // here we udpate the value after its received from teh precedent screen
     categoryIdRef.current = state?.categoryId || "";
+    categoryNameRef.current = state?.categoryName || "";
+
     getproduct();
   }, []);
 
@@ -35,7 +38,7 @@ const Product = ({}) => {
   };
   return (
     <div className="main-container">
-      <h2>{categoryIdRef.current}</h2>
+      <h2>{categoryNameRef.current}</h2>
       <div className="card-container">
         {error && <div>Error: {error.message}</div>}
         {product.map((item, index) => (

@@ -33,13 +33,15 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='' element={<PrivateRoute />}>
         <Route path='/profile' element={<ProfileScreen />} />
-        <Route path='/store' element={<StoreScreen />} />
+        {/* An example for nested routing in React */} 
+        <Route path='/store'>
+          <Route index={true} element={<StoreScreen />} />
+          <Route path='product' element={<Product />} />
+        </Route>
         <Route path='/repair' element={<RepairScreen />} />
         <Route path='/auto_claim' element={<AutoReclaimScreen />} />
         <Route path='/claims_treatment' element={<ClaimsTreatmentScreen />} />
         <Route path='/landing' element={<LandingScreen />} />
-        <Route path='/Product' element={<Product />} />
-
       </Route>
     </Route>
   )

@@ -101,6 +101,18 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
     throw new Error("No products found for this category");
   }
 });
+
+const getAllProductByCategoryName = asyncHandler(async (req, res) => {
+  // get all the products by the category Id
+  const products = await Product.find({ Category: req.params.categoryId });
+  if (products) {
+    res.json(products);
+  } else {
+    res.status(404);
+    throw new Error("No products found for this category");
+  }
+});
+
 export {
   addProduct,
   getAllProduct,
@@ -108,4 +120,5 @@ export {
   deleteProduct,
   getOneProduct,
   getProductsByCategory,
+  getAllProductByCategoryName
 };

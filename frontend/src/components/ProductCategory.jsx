@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import "./ProductCategory.css";
+import { useNavigate } from "react-router-dom";
 
 export const ProductCategory = () => {
   const [productCategory, setProductCategory] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getproductCategory();
   }, []);
+
+  const navigateToProductsScreen = (categoryId) => {
+    navigate("product", { state: {
+      categoryId: categoryId,
+      //
+    } });
+  }
 
   const getproductCategory = async () => {
     try {
@@ -22,8 +31,6 @@ export const ProductCategory = () => {
     }
   };
 
-  console.log("ProductCategory", productCategory);
-
   return (
     <div className="card-container">
       {error && <div>Error: {error.message}</div>}
@@ -32,9 +39,9 @@ export const ProductCategory = () => {
           <img src={item.image} alt="Card Image" className="card-img" />
           <h1 className="card-name">{item.name}</h1>
           <p className="card-description">{item.description}</p>
-          <a className="card-button" href={`/product/${item.id}`}>
-            More Product
-          </a>
+          <button className="card-button" onClick={() => navigateToProductsScreen(item._id)}>
+            See Products
+          </button>
         </div>
       ))}
     </div>

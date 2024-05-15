@@ -6,16 +6,18 @@ import {
     getAllProduct,
     updateProduct,
     deleteProduct,
-    getOneProduct
+    getOneProduct,
+    getAllProductByCategoryName
 } from '../controllers/productController.js';
 
 const router = express.Router();
 
 
 router.post('/', addProduct);
-router.get('/', getAllProduct, cors())
+router.get('/', getAllProduct)
 router.get('/:id', getOneProduct)
 router.put('/:id', updateProduct)
 router.delete('/:id', deleteProduct)
+router.get('/category/:categoryId', getAllProductByCategoryName)
 
 export default router;

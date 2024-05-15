@@ -21,6 +21,8 @@ import RepairScreen from './screens/RepairScreen.jsx';
 import AutoReclaimScreen from './screens/AutoReclaimScreen.jsx';
 import ClaimsTreatmentScreen from './screens/ClaimsTreatmentScreen.jsx';
 import LandingScreen from './screens/LandingScreen.jsx';
+import Product from './screens/Product.jsx';
+
 
 
 const router = createBrowserRouter(
@@ -36,6 +38,8 @@ const router = createBrowserRouter(
         <Route path='/auto_claim' element={<AutoReclaimScreen />} />
         <Route path='/claims_treatment' element={<ClaimsTreatmentScreen />} />
         <Route path='/landing' element={<LandingScreen />} />
+        <Route path='/Product' element={<Product />} />
+
       </Route>
     </Route>
   )

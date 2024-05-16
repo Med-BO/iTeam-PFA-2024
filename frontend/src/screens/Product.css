@@ -1,0 +1,75 @@
+.pr-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* Adjust as needed */
+}
+
+.pr-card {
+  margin: 4%;
+  width: 30%;
+  /* Adjust width of cards as needed */
+  margin-bottom: 20px;
+  /* Adjust margin between cards */
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.pr-card-img {
+  max-width: 100%;
+}
+
+.pr-stock-square {
+  display: inline-block;
+  text-align: center;
+  line-height: 20px;
+  font-weight: bold;
+  border-radius: 20%;
+  padding-left: 8px;
+  padding-right: 4px;
+  border-radius: 20px;
+}
+
+.pr-green {
+  padding-right: 4px;
+  padding-left: 4px;
+  border-radius: 10px;
+  background-color: green;
+  color: white;
+}
+
+.pr-red {
+  padding-right: 4px;
+  padding-left: 4px;
+  border-radius: 10px;
+  background-color: red;
+  color: white;
+}
+
+
+
+
+.pr-card-name {
+  font-size: 1.2em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.pr-card-description {
+  margin-bottom: 10px;
+}
+
+.pr-card-button {
+  display: block;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.pr-card-button:hover {
+  text-decoration-color: #fff;
+  background-color: #133961;
+}

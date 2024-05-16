@@ -37,10 +37,8 @@ const addProduct = asyncHandler(async (req, res) => {
 });
 
 const getAllProduct = asyncHandler(async (req, res) => {
-  // Fetch all product categories from the database
   const product = await Product.find();
 
-  // Return the product categories as a JSON response
   res.json(product);
 });
 

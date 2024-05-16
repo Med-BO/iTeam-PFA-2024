@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { loginInsuranceAccount } from '../controllers/productInsuranceController';
+import { loginInsuranceAccount } from '../controllers/productInsuranceController.js';
 
 
 

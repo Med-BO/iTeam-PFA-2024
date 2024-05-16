@@ -11,42 +11,77 @@ import { setCredentials } from "../slices/authSlice";
 
 const AutoReclaimScreen = () => {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const dispatch = useDispatch();
-
-  const { userInfo } = useSelector((state) => state.auth);
-
-  const [updateProfile, { isLoading }] = useUpdateUserMutation();
+  const [userId, setUserId] = useState(0);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    setName(userInfo.name);
-    setEmail(userInfo.email);
-  }, [userInfo.email, userInfo.name]);
+    const userJsonString = localStorage.getItem("userInfo");
+    setUserId(JSON.parse(userJsonString).id);
+  }, []);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-    } else {
-      try {
-        const res = await updateProfile({
-          _id: userInfo._id,
-          name,
-          email,
-          password,
-        }).unwrap();
-        console.log(res);
-        dispatch(setCredentials(res));
-        toast.success("Profile updated successfully");
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
+  const submitHandler = (e) => {
+    authenticateInsurance({ email, password, userId })
+  }
+
+  const authenticateInsurance = async (authenticationPayload) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/insurance/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(authenticationPayload),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Wrong credentials');
       }
+  
+      const data = await response.json();
+      console.log('Product added:', data);
+      setAuthenticated(true);
+    } catch (error) {
+      console.error('Error adding product:', error.message);
     }
   };
-  return <div></div>;
+
+  return (
+    <div>
+      <h1>Authenticate</h1>
+      <p>Enter your insurance credentials to access and manage your claims, you receive your insurance credentials when you buy a product from our store.</p>
+      <div className="row">
+        <Form className="col-6">
+          <Form.Group controlId="email">
+            <Form.Label>Email Address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <br />
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <br />
+          <Button type="submit" variant="primary" onClick={submitHandler}>
+            Authenticate
+          </Button>
+        </Form>
+        <div className="col-6">
+          <img src="src/assets/images/insurance_bg.png" alt="" />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AutoReclaimScreen;

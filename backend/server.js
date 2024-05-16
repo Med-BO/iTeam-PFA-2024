@@ -8,6 +8,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/userRoutes.js';
 import productCategoryRoutes from './routes/productCategoryRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import productInsuranceRoutes from './routes/productInsuranceRoutes.js';
 
 import cors from 'cors';
 
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use('/api/users', userRoutes);
 app.use('/api/category', productCategoryRoutes);
 app.use('/api/product', productRoutes);
+app.use('/api/insurance', productInsuranceRoutes);
 
 
 

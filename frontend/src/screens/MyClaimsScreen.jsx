@@ -8,10 +8,12 @@ import Loader from "../components/Loader";
 import { useUpdateUserMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
+import './MyClaimsScreen.css';
 
 const MyclaimsScreen = () => {
   const [userId, setUserId] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [claims, setClaims] = useState([]);
 
   useEffect(() => {
     const userJsonString = localStorage.getItem("userInfo");
@@ -46,7 +48,7 @@ const MyclaimsScreen = () => {
       }
 
       const data = await response.json();
-      console.log("Claims data:", data);
+      setClaims(data);
       toast.success("Claims retrieved successfully");
       setLoading(false);
     } catch (error) {
@@ -57,9 +59,34 @@ const MyclaimsScreen = () => {
   };
 
   return (
-    <div>
+    <div className="main-container">
       <h1>My Claims</h1>
-      {loading ? <p>Loading...</p> : <p>Claims will be displayed here.</p>}
+      {loading ? (
+        <Loader></Loader>
+      ) : (
+        <div className="claims-container row">
+          {claims.map((item, index) => (
+            <div key={index} className="claim-container col-4">
+              <div className="w-100 d-flex justify-content-between align-items-center">
+                <h3>{item.Product.name}</h3>
+                <div className="claim-status">
+                  {item.statuss === "pending" ? (
+                    <span className="badge bg-warning">Pending</span>
+                  ) : item.statuss === "approved" ? (
+                    <span className="badge bg-success">Approved</span>
+                  ) : (
+                    <span className="badge bg-danger">Rejected</span>
+                  )}
+                </div>
+              </div>
+              <div className="card-body">
+                <div className="subtitle">Overview</div>
+                <p>{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const productClaimSchema = mongoose.Schema(
   {
@@ -8,28 +8,28 @@ const productClaimSchema = mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['stolen', 'broken'],
+      enum: ["stolen", "broken"],
     },
     statuss: {
       type: String,
-      enum: ['pending', 'rejected', 'in_repair', 'done'],
+      enum: ["pending", "rejected", "in_repair", "done"],
     },
     Product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true
-      },
-      User: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    User: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const ProductClaim = mongoose.model('ProductClaim', productClaimSchema);
+const ProductClaim = mongoose.model("ProductClaim", productClaimSchema);
 
 export default ProductClaim;

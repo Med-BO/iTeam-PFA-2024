@@ -4,28 +4,32 @@ import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
-import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { useUpdateUserMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AutoReclaimScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState(0);
-  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userJsonString = localStorage.getItem("userInfo");
-    setUserId(JSON.parse(userJsonString).id);
+    setUserId(JSON.parse(userJsonString)._id);
   }, []);
 
   const submitHandler = (e) => {
+    setLoading(true)
     authenticateInsurance({ email, password, userId })
   }
 
   const authenticateInsurance = async (authenticationPayload) => {
     try {
+      console.log('here is the payload', authenticationPayload)
       const response = await fetch('http://localhost:5000/api/insurance/login', {
         method: 'POST',
         headers: {
@@ -40,9 +44,13 @@ const AutoReclaimScreen = () => {
   
       const data = await response.json();
       console.log('Product added:', data);
-      setAuthenticated(true);
+      toast.success('Authentication successful');
+      setLoading(false)
+      // navigate to my_claims route
+      navigate('/my_claims')
     } catch (error) {
-      console.error('Error adding product:', error.message);
+      console.error('Error while authenticating:', error.message);
+      setLoading(false)
     }
   };
 
@@ -72,9 +80,14 @@ const AutoReclaimScreen = () => {
             ></Form.Control>
           </Form.Group>
           <br />
-          <Button type="submit" variant="primary" onClick={submitHandler}>
+          {!loading ? (
+            <Button type="submit" variant="primary" onClick={submitHandler}>
             Authenticate
-          </Button>
+            </Button>
+          ) : (
+            <Loader />
+          )}
+          
         </Form>
         <div className="col-6">
           <img src="src/assets/images/insurance_bg.png" alt="" />

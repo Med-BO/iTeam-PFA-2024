@@ -26,10 +26,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    insurance_email: {
+    insuranceEmail: {
       type: String,
     },
-    insurance_password: {
+    insurancePassword: {
       type: String,
     },
   },

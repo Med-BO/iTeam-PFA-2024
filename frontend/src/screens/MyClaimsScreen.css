@@ -1,0 +1,9 @@
+.claim-container {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    box-shadow: 2px 1px 17px -12px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 2px 1px 17px -12px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 1px 17px -12px rgba(0,0,0,0.75);
+}

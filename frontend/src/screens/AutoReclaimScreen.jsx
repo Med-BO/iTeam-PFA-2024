@@ -8,12 +8,14 @@ import Loader from "../components/Loader";
 import { useUpdateUserMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AutoReclaimScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState(0);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userJsonString = localStorage.getItem("userInfo");
@@ -44,6 +46,8 @@ const AutoReclaimScreen = () => {
       console.log('Product added:', data);
       toast.success('Authentication successful');
       setLoading(false)
+      // navigate to my_claims route
+      navigate('/my_claims')
     } catch (error) {
       console.error('Error while authenticating:', error.message);
       setLoading(false)

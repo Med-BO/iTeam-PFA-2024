@@ -7,7 +7,7 @@ const app = express();
 const loginInsuranceAccount = asyncHandler(async (req, res) => {
   const { email, password, userId } = req.body;
 
-  const user = await User.find({ _id: userId });
+  const user = await User.findById(userId);
 
   const { insuranceEmail, insurancePassword } = user;
   const accountMatches =
@@ -18,7 +18,9 @@ const loginInsuranceAccount = asyncHandler(async (req, res) => {
     throw new Error("Wrong credentials");
   } else {
     res.status(200);
-    res.end("Login successful");
+    res.json({
+      message: "Authentication successful",
+    });
   }
 });
 

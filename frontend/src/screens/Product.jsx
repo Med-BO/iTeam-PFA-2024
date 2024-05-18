@@ -4,12 +4,16 @@ import { useLocation } from "react-router-dom";
 import { useRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { Form } from 'react-bootstrap';
+import { Form } from "react-bootstrap";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 const Product = ({}) => {
   const [product, setProduct] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -79,7 +83,7 @@ const Product = ({}) => {
               <Modal.Header closeButton>
                 <Modal.Title>Insurance</Modal.Title>
               </Modal.Header>
-              <Modal.Body>
+              <Modal.Body className="date-picker-wrapper">
                 <div>
                   <form>
                     <div class="form-row">
@@ -91,65 +95,119 @@ const Product = ({}) => {
                           <option value="universel">Universel</option>
                         </Form.Select>
                       </div>
+                      <br></br>
+
                       <div class="form-group col-md-6">
-                        <label for="inputPassword4">Password</label>
-                        <input
-                          type="password"
-                          class="form-control"
-                          id="inputPassword4"
-                          placeholder="Password"
-                        />
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputAddress">Address</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputAddress"
-                        placeholder="1234 Main St"
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label for="inputAddress2">Address 2</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="inputAddress2"
-                        placeholder="Apartment, studio, or floor"
-                      />
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="inputCity">City</label>
+                        <label for="inputPassword4">Price/Day</label>
                         <input
                           type="text"
                           class="form-control"
-                          id="inputCity"
+                          id="inputPassword4"
+                          placeholder="Price per day"
                         />
                       </div>
-                      <div class="form-group col-md-4">
-                        <label for="inputState">State</label>
-                        <select id="inputState" class="form-control">
-                          <option selected>Choose...</option>
-                          <option>...</option>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-2">
-                        <label for="inputZip">Zip</label>
-                        <input type="text" class="form-control" id="inputZip" />
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="gridCheck"
-                        />
-                        <label class="form-check-label" for="gridCheck">
-                          Check me out
-                        </label>
+                      <br></br>
+
+                      <div class="form-group">
+                        <div class="form-check">
+                          <label class="form-check-label" for="gridCheck">
+                            Steal protection
+                          </label>
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="gridCheck"
+                          />
+                        </div>
+                        <br></br>
+
+                        <div class="form-group">
+                          <label for="inputAddress">term of contract</label>
+                          <textarea
+                            type="text"
+                            class="form-control"
+                            id="inputAddress"
+                          />
+                        </div>
+                        <br></br>
+
+                        <div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label
+                                  for="inputLastName"
+                                  class="col-sm-4 col-form-label"
+                                >
+                                  LastName 
+                                </label>
+                                <div class="col-sm-8">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="inputLastName"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label
+                                  for="inputFirstName"
+                                  class="col-sm-4 col-form-label"
+                                >
+                                  FirstName 
+                                </label>
+                                <div class="col-sm-8">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="inputFirstName"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                            <br/>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group row">
+                                <label
+                                  for="inputEmail"
+                                  class="col-sm-4 col-form-label"
+                                >
+                                  Email 
+                                </label>
+                                <div class="col-sm-8">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="inputEmail"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <br />
+                          <div>
+                            <label>Start Date </label>{" "}
+                            <DatePicker
+                              className="form-control"
+                              selected={startDate}
+                              onChange={(date) => setStartDate(date)}
+                            />
+                          </div>
+                          <br />
+                          <div>
+                            <label>End Date </label>{" "}
+                            <DatePicker
+                              className="form-control"
+                              selected={endDate}
+                              onChange={(date) => setEndDate(date)}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </form>

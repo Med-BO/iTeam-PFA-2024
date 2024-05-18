@@ -71,7 +71,7 @@ const Product = ({}) => {
                 <span className="card-description-stock red">hors stock</span>
               )}
             </div>
-
+<br/>
             <Button
               className="card-button"
               variant="primary"
@@ -86,7 +86,22 @@ const Product = ({}) => {
               <Modal.Body className="date-picker-wrapper">
                 <div>
                   <form>
-                    <div class="form-row">
+                    <div className="container my-4 mt-0">
+                      <div className="row">
+                        <div className="col">
+                          <hr className="border-top border-dark" />
+                        </div>
+                        <div className="col-auto">
+                          <span className="text-uppercase text-secondary">
+                            Insurance information
+                          </span>
+                        </div>
+                        <div className="col">
+                          <hr className="border-top border-dark" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row row">
                       <div class="form-group col-md-6">
                         <label for="inputEmail4">insurance Type</label>
                         <Form.Select name="contract-type">
@@ -103,21 +118,23 @@ const Product = ({}) => {
                           type="text"
                           class="form-control"
                           id="inputPassword4"
-                          placeholder="Price per day"
                         />
+                                              <br></br>
                       </div>
                       <br></br>
 
+
                       <div class="form-group">
                         <div class="form-check">
-                          <label class="form-check-label" for="gridCheck">
-                            Steal protection
-                          </label>
-                          <input
+                        <input
                             class="form-check-input"
                             type="checkbox"
                             id="gridCheck"
                           />
+                          <label class="form-check-label" for="gridCheck">
+                            Steal protection
+                          </label>
+ 
                         </div>
                         <br></br>
 
@@ -130,7 +147,21 @@ const Product = ({}) => {
                           />
                         </div>
                         <br></br>
-
+                        <div className="container my-4">
+                          <div className="row">
+                            <div className="col">
+                              <hr className="border-top border-dark" />
+                            </div>
+                            <div className="col-auto">
+                              <span className="text-uppercase text-secondary">
+                                personal information
+                              </span>
+                            </div>
+                            <div className="col">
+                              <hr className="border-top border-dark" />
+                            </div>
+                          </div>
+                        </div>
                         <div>
                           <div class="row">
                             <div class="col-md-6">
@@ -139,7 +170,7 @@ const Product = ({}) => {
                                   for="inputLastName"
                                   class="col-sm-4 col-form-label"
                                 >
-                                  LastName 
+                                  LastName
                                 </label>
                                 <div class="col-sm-8">
                                   <input
@@ -157,7 +188,7 @@ const Product = ({}) => {
                                   for="inputFirstName"
                                   class="col-sm-4 col-form-label"
                                 >
-                                  FirstName 
+                                  FirstName
                                 </label>
                                 <div class="col-sm-8">
                                   <input
@@ -169,28 +200,42 @@ const Product = ({}) => {
                               </div>
                             </div>
                           </div>
-                            <br/>
+                          <br />
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                               <div class="form-group row">
                                 <label
                                   for="inputEmail"
-                                  class="col-sm-4 col-form-label"
                                 >
-                                  Email 
+                                  Email
                                 </label>
-                                <div class="col-sm-8">
+ </div></div>
+                                <div class="col-md-6">
                                   <input
                                     type="text"
                                     class="form-control"
                                     id="inputEmail"
                                   />
                                 </div>
+                              
+                           
+                          </div>
+                          <div className="container my-4 mb-0">
+                            <div className="row">
+                              <div className="col">
+                                <hr className="border-top border-dark" />
+                              </div>
+                              <div className="col-auto">
+                                <span className="text-uppercase text-secondary">Duration</span>
+                              </div>
+                              <div className="col">
+                                <hr className="border-top border-dark" />
                               </div>
                             </div>
                           </div>
                           <br />
-                          <div>
+                          <div className="row">
+                          <div className="col-md-6">
                             <label>Start Date </label>{" "}
                             <DatePicker
                               className="form-control"
@@ -199,13 +244,14 @@ const Product = ({}) => {
                             />
                           </div>
                           <br />
-                          <div>
+                          <div className="col-md-6">
                             <label>End Date </label>{" "}
                             <DatePicker
                               className="form-control"
                               selected={endDate}
                               onChange={(date) => setEndDate(date)}
                             />
+                          </div>
                           </div>
                         </div>
                       </div>
@@ -214,9 +260,13 @@ const Product = ({}) => {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+              <Button variant="dark" onClick={handleClose}>
                   Close
                 </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  Skip
+                </Button>
+  
                 <Button variant="primary" onClick={handleClose}>
                   Next
                 </Button>

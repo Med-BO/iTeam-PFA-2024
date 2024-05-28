@@ -10,6 +10,7 @@ import productCategoryRoutes from './routes/productCategoryRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import productInsuranceRoutes from './routes/productInsuranceRoutes.js';
 import productClaimRoutes from './routes/productClaimRoutes.js';
+import productBuyRoutes from './routes/productBuyRoutes.js';
 
 import cors from 'cors';
 
@@ -39,6 +40,8 @@ app.use('/api/category', productCategoryRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/insurance', productInsuranceRoutes);
 app.use('/api/claims', productClaimRoutes);
+app.use('/api/Buy', productBuyRoutes);
+
 
 
 

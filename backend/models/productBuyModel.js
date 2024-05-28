@@ -17,7 +17,8 @@ const productBuySchema = mongoose.Schema(
     },
     ProductInsurance: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ProductInsurance'
+        ref: 'ProductInsurance',
+        required: false
     },
   },
   {

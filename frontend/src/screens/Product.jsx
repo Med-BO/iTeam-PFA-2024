@@ -136,16 +136,8 @@ const Product = ({}) => {
                           </label>
  
                         </div>
-                        <br></br>
 
-                        <div class="form-group">
-                          <label for="inputAddress">term of contract</label>
-                          <textarea
-                            type="text"
-                            class="form-control"
-                            id="inputAddress"
-                          />
-                        </div>
+
                         <br></br>
                         <div className="container my-4">
                           <div className="row">

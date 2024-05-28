@@ -2,11 +2,7 @@
 import { useState, useEffect } from "react";
 // import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
-import { useUpdateUserMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 

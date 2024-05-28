@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-// import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
@@ -9,11 +8,13 @@ import { useUpdateUserMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import './MyClaimsScreen.css';
+import { useNavigate } from 'react-router-dom';
 
 const MyclaimsScreen = () => {
   const [userId, setUserId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [claims, setClaims] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userJsonString = localStorage.getItem("userInfo");
@@ -58,9 +59,18 @@ const MyclaimsScreen = () => {
     }
   };
 
+  const navigateToMyContracts = () => {
+    navigate('/my_contracts');
+  }
+
   return (
     <div className="main-container">
-      <h1>My Claims</h1>
+      <div className="d-flex justify-content-between align-items-center">
+        <h1>My Claims</h1>
+        <button className="btn btn-primary" onClick={navigateToMyContracts}>
+          My Contracts
+        </button>
+      </div>
       {loading ? (
         <Loader></Loader>
       ) : (

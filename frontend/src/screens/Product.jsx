@@ -71,7 +71,7 @@ const Product = ({}) => {
                 <span className="card-description-stock red">hors stock</span>
               )}
             </div>
-<br/>
+            <br />
             <Button
               className="card-button"
               variant="primary"
@@ -101,9 +101,9 @@ const Product = ({}) => {
                         </div>
                       </div>
                     </div>
-                    <div class="form-row row">
-                      <div class="form-group col-md-6">
-                        <label for="inputEmail4">insurance Type</label>
+                    <div className="form-row row">
+                      <div className="form-group col-md-6">
+                        <label htmlFor="inputEmail4">insurance Type</label>
                         <Form.Select name="contract-type">
                           <option value="premium">Premium</option>
                           <option value="smartphone">Smartphone</option>
@@ -112,31 +112,31 @@ const Product = ({}) => {
                       </div>
                       <br></br>
 
-                      <div class="form-group col-md-6">
-                        <label for="inputPassword4">Price/Day</label>
+                      <div className="form-group col-md-6">
+                        <label htmlFor="inputPassword4">Price/Day</label>
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           id="inputPassword4"
                         />
-                                              <br></br>
+                        <br></br>
                       </div>
                       <br></br>
 
-
-                      <div class="form-group">
-                        <div class="form-check">
-                        <input
-                            class="form-check-input"
+                      <div className="form-group">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
                             type="checkbox"
                             id="gridCheck"
                           />
-                          <label class="form-check-label" for="gridCheck">
+                          <label
+                            className="form-check-label"
+                            htmlFor="gridCheck"
+                          >
                             Steal protection
                           </label>
- 
                         </div>
-
 
                         <br></br>
                         <div className="container my-4">
@@ -155,37 +155,37 @@ const Product = ({}) => {
                           </div>
                         </div>
                         <div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-group row">
                                 <label
-                                  for="inputLastName"
-                                  class="col-sm-4 col-form-label"
+                                  htmlFor="inputLastName"
+                                  className="col-sm-4 col-form-label"
                                 >
                                   LastName
                                 </label>
-                                <div class="col-sm-8">
+                                <div className="col-sm-8">
                                   <input
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     id="inputLastName"
                                   />
                                 </div>
                               </div>
                             </div>
 
-                            <div class="col-md-6">
-                              <div class="form-group row">
+                            <div className="col-md-6">
+                              <div className="form-group row">
                                 <label
-                                  for="inputFirstName"
-                                  class="col-sm-4 col-form-label"
+                                  htmlFor="inputFirstName"
+                                  className="col-sm-4 col-form-label"
                                 >
                                   FirstName
                                 </label>
-                                <div class="col-sm-8">
+                                <div className="col-sm-8">
                                   <input
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     id="inputFirstName"
                                   />
                                 </div>
@@ -193,24 +193,19 @@ const Product = ({}) => {
                             </div>
                           </div>
                           <br />
-                          <div class="row">
-                            <div class="col-md-2">
-                              <div class="form-group row">
-                                <label
-                                  for="inputEmail"
-                                >
-                                  Email
-                                </label>
- </div></div>
-                                <div class="col-md-6">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="inputEmail"
-                                  />
-                                </div>
-                              
-                           
+                          <div className="row">
+                            <div className="col-md-2">
+                              <div className="form-group row">
+                                <label htmlFor="inputEmail">Email</label>
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="inputEmail"
+                              />
+                            </div>
                           </div>
                           <div className="container my-4 mb-0">
                             <div className="row">
@@ -218,7 +213,9 @@ const Product = ({}) => {
                                 <hr className="border-top border-dark" />
                               </div>
                               <div className="col-auto">
-                                <span className="text-uppercase text-secondary">Duration</span>
+                                <span className="text-uppercase text-secondary">
+                                  Duration
+                                </span>
                               </div>
                               <div className="col">
                                 <hr className="border-top border-dark" />
@@ -227,23 +224,23 @@ const Product = ({}) => {
                           </div>
                           <br />
                           <div className="row">
-                          <div className="col-md-6">
-                            <label>Start Date </label>{" "}
-                            <DatePicker
-                              className="form-control"
-                              selected={startDate}
-                              onChange={(date) => setStartDate(date)}
-                            />
-                          </div>
-                          <br />
-                          <div className="col-md-6">
-                            <label>End Date </label>{" "}
-                            <DatePicker
-                              className="form-control"
-                              selected={endDate}
-                              onChange={(date) => setEndDate(date)}
-                            />
-                          </div>
+                            <div className="col-md-6">
+                              <label>Start Date </label>{" "}
+                              <DatePicker
+                                className="form-control"
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                              />
+                            </div>
+                            <br />
+                            <div className="col-md-6">
+                              <label>End Date </label>{" "}
+                              <DatePicker
+                                className="form-control"
+                                selected={endDate}
+                                onChange={(date) => setEndDate(date)}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -252,13 +249,13 @@ const Product = ({}) => {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-              <Button variant="dark" onClick={handleClose}>
+                <Button variant="dark" onClick={handleClose}>
                   Close
                 </Button>
                 <Button variant="secondary" onClick={handleClose}>
                   Skip
                 </Button>
-  
+
                 <Button variant="primary" onClick={handleClose}>
                   Next
                 </Button>

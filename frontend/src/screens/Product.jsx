@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Button, Modal, Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
@@ -9,6 +9,7 @@ const Product = () => {
   const [product, setProduct] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
+  const [showProductModal, setshowProductModal] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [userId, setUserId] = useState(0);
@@ -16,11 +17,25 @@ const Product = () => {
   const [contractType, setContractType] = useState("premium");
   const [ppd, setPpd] = useState(10);
   const [stealProtection, setStealProtection] = useState(true);
+  const [insurancePrice, setInsurancePrice] = useState(0);
+  const [productToBuyName, setProductToBuyName] = useState("");
+  const [productToBuyPrice, setProductToBuyPrice] = useState(0);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setshowProductModal(false);
+  }
   const handleShow = (productId) => {
     setShow(true);
     setProductIdToBuy(productId);
+  };
+
+  const handleShowProductModal = () => {
+    setShow(false);
+    setInsurancePrice(ppd * (endDate - startDate) / (1000 * 60 * 60 * 24));
+    setProductToBuyName(product.find(p => p._id === productIdToBuy).name);
+    setProductToBuyPrice(product.find(p => p._id === productIdToBuy).price);
+    setshowProductModal(true);
   };
 
   // here we receive the sent value from the precedent screen
@@ -235,8 +250,50 @@ const Product = () => {
           <Button variant="secondary" onClick={handleClose}>
             Skip
           </Button>
-          <Button variant="primary" onClick={handleBuy}>
+          <Button variant="primary" onClick={() => handleShowProductModal()}>
             Next
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showProductModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Buy</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="">
+            <div className="d-flex w-100 justify-content-between align-items-center">
+              <div>
+                Product
+              </div>
+              <div>
+                {productToBuyName} - <b>{ productToBuyPrice } TND</b>
+              </div>
+            </div>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                Insurance
+              </div>
+              <div>
+                { insurancePrice } TND
+              </div>
+            </div>
+            <hr />
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                Total
+              </div>
+              <div>
+                { productToBuyPrice + insurancePrice } TND
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleBuy}>
+            Buy
           </Button>
         </Modal.Footer>
       </Modal>

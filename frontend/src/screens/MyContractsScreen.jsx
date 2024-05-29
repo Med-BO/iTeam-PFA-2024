@@ -7,7 +7,7 @@ import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import "./MyContractsScreen.css";
 import { FaFileAlt } from "react-icons/fa";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, ButtonGroup, ToggleButton } from "react-bootstrap";
 import Product from "./Product";
 import { Tooltip } from "react-tooltip";
 
@@ -17,7 +17,14 @@ const MyContractsScreen = () => {
   const [contracts, setContracts] = useState([]);
   const [show, setShow] = useState(false);
   const [activeProduct, setActiveProduct] = useState({});
+  const [radioValue, setRadioValue] = useState('1');
   const today = new Date();
+
+  const radios = [
+    { name: 'Stolen', value: 'stolen' },
+    { name: 'Broken', value: 'broken' }
+  ];
+
 
   useEffect(() => {
     const userJsonString = localStorage.getItem("userInfo");
@@ -133,7 +140,7 @@ const MyContractsScreen = () => {
                     className="btn btn-primary"
                     onClick={() => {
                       if (canAddClaim) {
-                        openAddClaimModal(item.Product)
+                        openAddClaimModal(item.Product);
                       }
                     }}
                     // disabled={!canAddClaim}
@@ -172,56 +179,25 @@ const MyContractsScreen = () => {
             </div>
             <div className="form-row row">
               <div className="form-group col-md-6">
-                <label htmlFor="inputEmail4">Insurance Type</label>
-                <Form.Select name="contract-type">
-                  <option value="premium">Premium</option>
-                  <option value="smartphone">Smartphone</option>
-                  <option value="universal">Universal</option>
-                </Form.Select>
+                <label htmlFor="inputEmail4">Issue Type</label>
+                <ButtonGroup>
+                  {radios.map((radio, idx) => (
+                    <ToggleButton
+                      key={idx}
+                      id={`radio-${idx}`}
+                      type="radio"
+                      variant="outline-primary"
+                      name="radio"
+                      value={radio.value}
+                      checked={radioValue === radio.value}
+                      onChange={(e) => setRadioValue(e.currentTarget.value)}
+                    >
+                      {radio.name}
+                    </ToggleButton>
+                  ))}
+                </ButtonGroup>
               </div>
               <br />
-              <div className="form-group col-md-6">
-                <label htmlFor="inputPassword4">Price/Day</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword4"
-                />
-                <br />
-              </div>
-              <br />
-              <div className="form-group">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="gridCheck"
-                  />
-                  <label className="form-check-label" htmlFor="gridCheck">
-                    Steal protection
-                  </label>
-                </div>
-                <div>
-                  <div className="row">
-                    <div className="container my-4 mb-0">
-                      <div className="row">
-                        <div className="col">
-                          <hr className="border-top border-dark" />
-                        </div>
-                        <div className="col-auto">
-                          <span className="text-uppercase text-secondary">
-                            Duration
-                          </span>
-                        </div>
-                        <div className="col">
-                          <hr className="border-top border-dark" />
-                        </div>
-                      </div>
-                    </div>
-                    <br />
-                  </div>
-                </div>
-              </div>
             </div>
           </Form>
         </Modal.Body>

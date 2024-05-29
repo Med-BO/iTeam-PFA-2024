@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Card, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import { Container, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./ProductCategory.css";
 
 export const ProductCategory = () => {
   const [productCategory, setProductCategory] = useState([]);
@@ -32,24 +33,37 @@ export const ProductCategory = () => {
   return (
     <Container>
       {error && <Alert variant="danger">Error: {error.message}</Alert>}
-      <Row>
+      <h1>Categories</h1>
+      <hr />
+      <div className="row equal-height-cards">
         {productCategory.map((item, index) => (
-          <Col key={index} sm={12} md={6} lg={4} className="mb-4">
-            <Card className="h-100">
-              <div className="card-image-wrapper">
-                <Card.Img variant="top" src={item.image} alt="Card Image" className="card-img-top" />
+          <div key={index} className="col-sm-12 col-md-6 col-lg-4 mb-4">
+            <div className="category-container">
+              <div className="card custom-card">
+                <div className="card-image-wrapper">
+                  <img
+                    src={item.image}
+                    alt="Card Image"
+                    className="card-img-top custom-card-img"
+                  />
+                </div>
+                <div className="card-body d-flex flex-column">
+                  <h5 className="card-title">{item.name}</h5>
+                  <p className="card-text flex-grow-1">{item.description}</p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() =>
+                      navigateToProductsScreen(item._id, item.name)
+                    }
+                  >
+                    See Products
+                  </button>
+                </div>
               </div>
-              <Card.Body className="d-flex flex-column">
-                <Card.Title>{item.name}</Card.Title>
-                <Card.Text className="flex-grow-1">{item.description}</Card.Text>
-                <Button variant="primary" onClick={() => navigateToProductsScreen(item._id, item.name)}>
-                  See Products
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
+            </div>
+          </div>
         ))}
-      </Row>
+      </div>
     </Container>
   );
 };

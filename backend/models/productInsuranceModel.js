@@ -4,7 +4,7 @@ const productInsuranceSchema = mongoose.Schema(
   {
     contractType: {
         type: String,
-        enum: ['smartphone', 'premium', 'universal'],
+        enum: ['basic', 'standard', 'premium'],
     },
     Product: {
         type: mongoose.Schema.Types.ObjectId,

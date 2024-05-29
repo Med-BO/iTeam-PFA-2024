@@ -57,7 +57,7 @@ const ClaimsTreatmentScreen = () => {
   };
 
   const filteredClaims = claims.filter(claim => 
-    claim._id.toLowerCase().includes(searchTerm.toLowerCase()) && 
+    (claim._id.toLowerCase().includes(searchTerm.toLowerCase()) || claim.User.name.toLowerCase().includes(searchTerm.toLowerCase())) && 
     (statusFilter === "All" || claim.statuss === statusFilter)
   );
 
@@ -68,7 +68,7 @@ const ClaimsTreatmentScreen = () => {
       <br />
       <InputGroup className="mb-3">
         <FormControl
-          placeholder="Search by Claim ID"
+          placeholder="Search by Claim ID or customer name"
           aria-label="Search by Claim ID"
           aria-describedby="basic-addon2"
           value={searchTerm}

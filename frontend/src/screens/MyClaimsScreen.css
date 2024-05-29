@@ -60,3 +60,8 @@
     }
   }
   
+  .no-found {
+    margin-top: 10vh;
+    font-weight: 400;
+    color: #909090;
+  }

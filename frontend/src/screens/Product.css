@@ -1,4 +1,4 @@
-/* .pr-card-container {
+/* /* .pr-card-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -78,7 +78,7 @@
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: start;
 }
 
 .card {
@@ -86,8 +86,8 @@
 }
 
 .card-img-top {
-  height: 200px;
-  object-fit: cover;
+  object-fit: contain;
+  height: 50%;
 }
 
 .card-name {
@@ -113,4 +113,13 @@
 .subtitle {
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.pr-card-body {
+  padding: 20px;
+}
+
+.pr-card-body .subtitle {
+  font-weight: 400;
+  font-size: small;
 }

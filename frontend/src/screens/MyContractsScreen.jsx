@@ -20,6 +20,7 @@ const MyContractsScreen = () => {
   const [show, setShow] = useState(false);
   const [activeProduct, setActiveProduct] = useState({});
   const [radioValue, setRadioValue] = useState("1");
+  const [claimDescription, setClaimDescription] = useState("");
   const today = new Date();
 
   const radios = [
@@ -73,7 +74,36 @@ const MyContractsScreen = () => {
     setShow(false);
   };
 
-  const addClaim = () => {
+  const addClaim = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/claims/productClaims`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            description: claimDescription,
+            type: radioValue,
+            Product: activeProduct._id,
+            User: userId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit claim");
+      }
+
+      const data = await response.json();
+      toast.success("Claim submitted succesfully");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error while submitting claim:", error.message);
+      toast.error("Error while submitting claim");
+      setLoading(false);
+    }
     setShow(false);
   };
 
@@ -95,7 +125,7 @@ const MyContractsScreen = () => {
         <div className="contracts-grid">
           {contracts.map((item, index) => {
             const endDate = new Date(item.endDate);
-            const canAddClaim = endDate > today;
+            const canAddClaim = endDate < today;
             const tooltipMessage = "Insurance expired. Cannot add claim.";
 
             return (
@@ -133,17 +163,17 @@ const MyContractsScreen = () => {
                   <button
                     className="btn btn-primary"
                     onClick={() => {
-                      if (canAddClaim) {
+                      if (!canAddClaim) {
                         openAddClaimModal(item.Product);
                       }
                     }}
-                    disabled={!canAddClaim}
-                    data-tooltip-id={!canAddClaim ? "my-tooltip" : ""}
-                    data-tooltip-content={!canAddClaim ? tooltipMessage : ""}
+                    disabled={canAddClaim}
+                    data-tooltip-id={canAddClaim ? "my-tooltip" : ""}
+                    data-tooltip-content={canAddClaim ? tooltipMessage : ""}
                   >
                     Add Claim
                   </button>
-                  {!canAddClaim && <Tooltip id="my-tooltip" />}
+                  {canAddClaim && <Tooltip id="my-tooltip" />}
                 </div>
               </div>
             );
@@ -161,7 +191,7 @@ const MyContractsScreen = () => {
                 <span className="section-title">Issue description</span>
               </div>
               <div className="form-row">
-                <div className="form-group">
+                <div className="form-group d-flex justify-content-between">
                   <label>Issue Type</label>
                   <ButtonGroup>
                     {radios.map((radio, idx) => (
@@ -185,6 +215,8 @@ const MyContractsScreen = () => {
                   <textarea
                     className="form-control"
                     rows="3"
+                    value={claimDescription}
+                    onChange={(e) => setClaimDescription(e.target.value)}
                   ></textarea>
                 </div>
               </div>

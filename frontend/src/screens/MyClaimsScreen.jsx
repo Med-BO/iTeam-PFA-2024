@@ -68,34 +68,40 @@ const MyclaimsScreen = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="claims-grid">
-          {claims.map((item, index) => (
-            <div key={index} className="claim-card">
-              <div className="claim-header">
-                <h3>{item.Product.name}</h3>
-                <div className="claim-status">
-                  {item.statuss === "pending" ? (
-                    <span className="badge bg-warning">Pending</span>
-                  ) : item.statuss === "done" ? (
-                    <span className="badge bg-success">Done</span>
-                  ) : item.statuss === "in_repair" ? (
-                    <span className="badge bg-info">In repair</span>
-                  ) : item.statuss === "repair_complete" ? (
-                    <span className="badge bg-info">Repair complete</span>
-                  ) : (
-                    <span className="badge bg-danger">Rejected</span>
-                  )}
+        claims.length === 0 ? (
+          <div className="d-flex justify-content-center">
+            <div className="no-found">No claims found.</div>
+          </div>
+        ) : (
+          <div className="claims-grid">
+            {claims.map((item, index) => (
+              <div key={index} className="claim-card">
+                <div className="claim-header">
+                  <h3>{item.Product.name}</h3>
+                  <div className="claim-status">
+                    {item.statuss === "pending" ? (
+                      <span className="badge bg-warning">Pending</span>
+                    ) : item.statuss === "done" ? (
+                      <span className="badge bg-success">Done</span>
+                    ) : item.statuss === "in_repair" ? (
+                      <span className="badge bg-info">In repair</span>
+                    ) : item.statuss === "repair_complete" ? (
+                      <span className="badge bg-info">Repair complete</span>
+                    ) : (
+                      <span className="badge bg-danger">Rejected</span>
+                    )}
+                  </div>
+                </div>
+                <div className="card-body">
+                  <div className="subtitle">Type</div>
+                  <p>{item.type}</p>
+                  <div className="subtitle">Overview</div>
+                  <p>{item.description}</p>
                 </div>
               </div>
-              <div className="card-body">
-                <div className="subtitle">Type</div>
-                <p>{item.type}</p>
-                <div className="subtitle">Overview</div>
-                <p>{item.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )
       )}
     </div>
   );

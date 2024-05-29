@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, FormControl, InputGroup } from "react-bootstrap";
+import { Button, FormControl, InputGroup, DropdownButton, Dropdown } from "react-bootstrap";
 import Accordion from "react-bootstrap/Accordion";
 import "./RepairScreen.css";
 
@@ -7,6 +7,7 @@ const RepairScreen = () => {
   const [repairProcedures, setRepairProcedures] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   useEffect(() => {
     getAllRepairProcedures();
@@ -48,19 +49,22 @@ const RepairScreen = () => {
       }
 
       const updatedRepairProcedure = await response.json();
-      // update the statuss of the claim
+      // update the status of the claim
       repairProcedures.find(
-        (procedure) => procedure._id === updatedRepairProcedure._id
-      ).statuss = updatedRepairProcedure.statuss;
+        (procedure) => procedure._id === updatedRepairProcedure.repair._id
+      ).statuss = updatedRepairProcedure.repair.statuss;
       setRepairProcedures([...repairProcedures]);
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  const filteredRepairProcedures = repairProcedures.filter((claim) =>
-    claim._id.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredRepairProcedures = repairProcedures.filter((procedure) => {
+    return (
+      procedure._id.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (statusFilter === "all" || procedure.statuss === statusFilter)
+    );
+  });
 
   return (
     <div className="container mt-4">
@@ -75,6 +79,17 @@ const RepairScreen = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <DropdownButton
+          as={InputGroup.Append}
+          variant="outline-secondary"
+          title={statusFilter === "all" ? "Filter by Status" : statusFilter}
+          id="input-group-dropdown-2"
+          onSelect={(e) => setStatusFilter(e)}
+        >
+          <Dropdown.Item eventKey="all">All</Dropdown.Item>
+          <Dropdown.Item eventKey="in repair">In Repair</Dropdown.Item>
+          <Dropdown.Item eventKey="done">Done</Dropdown.Item>
+        </DropdownButton>
       </InputGroup>
 
       {loading ? (
@@ -89,6 +104,16 @@ const RepairScreen = () => {
               <div className="repair-procedure-header d-flex justify-content-between align-items-center">
                 <div>Reference</div>
                 <div>{repairProcedure._id}</div>
+              </div>
+              <div className="repair-procedure-header d-flex justify-content-between align-items-center">
+                <div>Status</div>
+                <div className="claim-status">
+                  {repairProcedure.statuss === "done" ? (
+                    <span className="badge bg-success">Done</span>
+                  ) : (
+                    <span className="badge bg-warning">In repair</span>
+                  )}
+                </div>
               </div>
               <hr />
               <div className="repair-procedure-body">
@@ -107,7 +132,15 @@ const RepairScreen = () => {
                 </div>
               </div>
               <div className="repair-procedure-footer d-flex justify-content-end align-items-center">
-                <Button variant="primary" onClick={() => updateRepairProcedureStatus(repairProcedure._id, 'done')}>Mark as repaired</Button>
+                <Button
+                  variant="primary"
+                  disabled={repairProcedure.statuss === "done"}
+                  onClick={() =>
+                    updateRepairProcedureStatus(repairProcedure._id, "done")
+                  }
+                >
+                  Mark as repaired
+                </Button>
               </div>
             </div>
           ))}

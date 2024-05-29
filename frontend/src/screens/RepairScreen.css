@@ -1,5 +1,7 @@
 .repair-procedure-container {
     width: 30%;
+    height: 530px;
+    max-width: 530px;
     padding: 10px;
     border-radius: 10px;
     background-color: rgb(51, 117, 134);

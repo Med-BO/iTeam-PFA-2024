@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       enum: ['client', 'repair_agent', 'insurance_agent'],
-      //default: 'client',
+      default: 'client',
     },
     has_bought: {
       type: Boolean,

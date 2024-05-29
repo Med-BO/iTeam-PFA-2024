@@ -6,24 +6,32 @@ import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Product = () => {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(tomorrow);
+
   const [product, setProduct] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
   const [showProductModal, setshowProductModal] = useState(false);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
   const [userId, setUserId] = useState(0);
   const [productIdToBuy, setProductIdToBuy] = useState(0);
-  const [contractType, setContractType] = useState("premium");
+  const [contractType, setContractType] = useState("none");
   const [ppd, setPpd] = useState(10);
   const [stealProtection, setStealProtection] = useState(true);
   const [insurancePrice, setInsurancePrice] = useState(0);
   const [productToBuyName, setProductToBuyName] = useState("");
   const [productToBuyPrice, setProductToBuyPrice] = useState(0);
+  const [insuranceAccount, setInsuranceAccount] = useState({});
+  const [showInsuranceAccountModal, setShowInsuranceAccountModal] = useState(false);
 
   const handleClose = () => {
     setShow(false);
     setshowProductModal(false);
+    setShowInsuranceAccountModal(false);
   }
   const handleShow = (productId) => {
     setShow(true);
@@ -101,8 +109,17 @@ const Product = () => {
       }
 
       toast.success('Product was successfully bought');
-      // setLoading(false)
-      // navigate to my_claims route
+      // decrease the stock quantity for that product
+      const updatedProduct = product.find(p => p._id === productIdToBuy);
+      updatedProduct.stock_quantity -= 1;
+      setProduct([...product.filter(p => p._id !== productIdToBuy), updatedProduct]);
+
+      const data = await response.json();
+      if (data.insuranceAccount) {
+        toast.success(`Insurance account created: ${data.insuranceAccount.email} - ${data.insuranceAccount.password}`);
+      }
+      setInsuranceAccount(data.insuranceAccount)
+      setShowInsuranceAccountModal(true)
     } catch (error) {
       console.error('Error while authenticating:', error.message);
       // setLoading(false)
@@ -113,6 +130,15 @@ const Product = () => {
     buyProduct();
     handleClose();
   };
+
+  const skipToProductBuy = () => {
+    setShow(false);
+    setShow(false);
+    setInsurancePrice(ppd * (endDate - startDate) / (1000 * 60 * 60 * 24));
+    setProductToBuyName(product.find(p => p._id === productIdToBuy).name);
+    setProductToBuyPrice(product.find(p => p._id === productIdToBuy).price);
+    setshowProductModal(true);
+  }
 
   return (
     <div className="main-container">
@@ -174,6 +200,7 @@ const Product = () => {
               <div className="form-group col-md-6">
                 <label htmlFor="inputEmail4">Insurance Type</label>
                 <Form.Select name="contract-type" onChange={(e) => setContractType(e.target.value)}>
+                  <option value="none">Select a type</option>
                   <option value="premium">Premium</option>
                   <option value="smartphone">Smartphone</option>
                   <option value="universal">Universal</option>
@@ -247,7 +274,7 @@ const Product = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => skipToProductBuy()}>
             Skip
           </Button>
           <Button variant="primary" onClick={() => handleShowProductModal()}>
@@ -294,6 +321,39 @@ const Product = () => {
           </Button>
           <Button variant="primary" onClick={handleBuy}>
             Buy
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showInsuranceAccountModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Insurance Account</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="">
+            <div className="subtitle">
+              Your account credentials
+            </div>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                Email:
+              </div>
+              <div>
+                {insuranceAccount.email}
+              </div>
+            </div>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                Password:
+              </div>
+              <div>
+                {insuranceAccount.password}
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Ok
           </Button>
         </Modal.Footer>
       </Modal>

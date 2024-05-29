@@ -1,14 +1,26 @@
-.repair-procedure-container {
-    width: 30%;
-    height: 530px;
-    max-width: 530px;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: rgb(51, 117, 134);
-    color: white;
-}
-
-.repair-procedure-subtitle {
-    color: rgb(232, 234, 234);
-    font-size: small;
-}
+.repair-procedures-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+  }
+  
+  .card {
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card img {
+    object-fit: cover;
+  }
+  
+  .badge.bg-success {
+    background-color: #28a745 !important;
+  }
+  
+  .badge.bg-warning {
+    background-color: #ffc107 !important;
+  }
+  

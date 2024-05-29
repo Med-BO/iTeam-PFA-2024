@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button, FormControl, InputGroup } from "react-bootstrap";
+import { Button, FormControl, InputGroup, DropdownButton, Dropdown } from "react-bootstrap";
 import Accordion from 'react-bootstrap/Accordion';
 
 const ClaimsTreatmentScreen = () => {
   const [claims, setClaims] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
     getAllClaims();
@@ -45,16 +46,19 @@ const ClaimsTreatmentScreen = () => {
       }
 
       const updatedClaim = await response.json();
-      // update the statuss of the claim
-      claims.find(claim => claim._id === updatedClaim._id).statuss = updatedClaim.statuss;
-      setClaims([...claims]);
+      // update the status of the claim
+      const updatedClaims = claims.map(claim => 
+        claim._id === updatedClaim._id ? { ...claim, statuss: updatedClaim.statuss } : claim
+      );
+      setClaims(updatedClaims);
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  const filteredClaims = claims.filter(claim =>
-    claim._id.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredClaims = claims.filter(claim => 
+    claim._id.toLowerCase().includes(searchTerm.toLowerCase()) && 
+    (statusFilter === "All" || claim.statuss === statusFilter)
   );
 
   return (
@@ -70,12 +74,27 @@ const ClaimsTreatmentScreen = () => {
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
+        <DropdownButton
+          as={InputGroup.Append}
+          variant="outline-secondary"
+          title={statusFilter === "All" ? "Filter by Status" : statusFilter}
+          id="input-group-dropdown-2"
+          alignRight
+          onSelect={(status) => setStatusFilter(status)}
+        >
+          <Dropdown.Item eventKey="All">All</Dropdown.Item>
+          <Dropdown.Item eventKey="pending">Pending</Dropdown.Item>
+          <Dropdown.Item eventKey="done">Done</Dropdown.Item>
+          <Dropdown.Item eventKey="in_repair">In repair</Dropdown.Item>
+          <Dropdown.Item eventKey="repair_complete">Repair complete</Dropdown.Item>
+          <Dropdown.Item eventKey="rejected">Rejected</Dropdown.Item>
+        </DropdownButton>
       </InputGroup>
 
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <Accordion defaultActiveKey="0" flush>
+        <Accordion flush>
           {filteredClaims.map((claim, index) => (
             <Accordion.Item eventKey={index.toString()} key={claim._id}>
               <Accordion.Header>

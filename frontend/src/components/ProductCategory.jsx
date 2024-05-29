@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import "./ProductCategory.css";
+import { Card, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const ProductCategory = () => {
   const [productCategory, setProductCategory] = useState([]);
@@ -12,11 +13,8 @@ export const ProductCategory = () => {
   }, []);
 
   const navigateToProductsScreen = (categoryId, categoryName) => {
-    navigate("product", { state: {
-      categoryId: categoryId,
-      categoryName: categoryName
-    } });
-  }
+    navigate("product", { state: { categoryId, categoryName } });
+  };
 
   const getproductCategory = async () => {
     try {
@@ -32,18 +30,26 @@ export const ProductCategory = () => {
   };
 
   return (
-    <div className="card-container">
-      {error && <div>Error: {error.message}</div>}
-      {productCategory.map((item, index) => (
-        <div key={index} className="card">
-          <img src={item.image} alt="Card Image" className="card-img" />
-          <h1 className="card-name">{item.name}</h1>
-          <p className="card-description">{item.description}</p>
-          <button className="card-button" onClick={() => navigateToProductsScreen(item._id, item.name)}>
-            See Products
-          </button>
-        </div>
-      ))}
-    </div>
+    <Container>
+      {error && <Alert variant="danger">Error: {error.message}</Alert>}
+      <Row>
+        {productCategory.map((item, index) => (
+          <Col key={index} sm={12} md={6} lg={4} className="mb-4">
+            <Card className="h-100">
+              <div className="card-image-wrapper">
+                <Card.Img variant="top" src={item.image} alt="Card Image" className="card-img-top" />
+              </div>
+              <Card.Body className="d-flex flex-column">
+                <Card.Title>{item.name}</Card.Title>
+                <Card.Text className="flex-grow-1">{item.description}</Card.Text>
+                <Button variant="primary" onClick={() => navigateToProductsScreen(item._id, item.name)}>
+                  See Products
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 };

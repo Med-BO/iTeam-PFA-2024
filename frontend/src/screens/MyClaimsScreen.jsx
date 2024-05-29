@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import Loader from "../components/Loader";
-
 import { toast } from "react-toastify";
 import './MyClaimsScreen.css';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +28,6 @@ const MyclaimsScreen = () => {
   const getUserClaims = async () => {
     setLoading(true);
     try {
-      console.log("here is the userId", userId);
       const response = await fetch(
         `http://localhost:5000/api/claims/user/${userId}`,
         {
@@ -61,19 +59,19 @@ const MyclaimsScreen = () => {
 
   return (
     <div className="main-container">
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="header">
         <h1>My Claims</h1>
         <button className="btn btn-primary" onClick={navigateToMyContracts}>
           My Contracts
         </button>
       </div>
       {loading ? (
-        <Loader></Loader>
+        <Loader />
       ) : (
-        <div className="claims-container row">
+        <div className="claims-grid">
           {claims.map((item, index) => (
-            <div key={index} className="claim-container col-4">
-              <div className="w-100 d-flex justify-content-between align-items-center">
+            <div key={index} className="claim-card">
+              <div className="claim-header">
                 <h3>{item.Product.name}</h3>
                 <div className="claim-status">
                   {item.statuss === "pending" ? (
@@ -90,7 +88,7 @@ const MyclaimsScreen = () => {
                 </div>
               </div>
               <div className="card-body">
-              <div className="subtitle">Type</div>
+                <div className="subtitle">Type</div>
                 <p>{item.type}</p>
                 <div className="subtitle">Overview</div>
                 <p>{item.description}</p>

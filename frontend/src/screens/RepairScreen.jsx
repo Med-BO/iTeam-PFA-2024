@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button, FormControl, InputGroup, DropdownButton, Dropdown } from "react-bootstrap";
-import Accordion from "react-bootstrap/Accordion";
+import {
+  Button,
+  FormControl,
+  InputGroup,
+  DropdownButton,
+  Dropdown,
+  Spinner,
+} from "react-bootstrap";
 import "./RepairScreen.css";
 
 const RepairScreen = () => {
@@ -49,11 +55,12 @@ const RepairScreen = () => {
       }
 
       const updatedRepairProcedure = await response.json();
-      // update the status of the claim
-      repairProcedures.find(
-        (procedure) => procedure._id === updatedRepairProcedure.repair._id
-      ).statuss = updatedRepairProcedure.repair.statuss;
-      setRepairProcedures([...repairProcedures]);
+      const updatedProcedures = repairProcedures.map((procedure) =>
+        procedure._id === updatedRepairProcedure.repair._id
+          ? { ...procedure, statuss: updatedRepairProcedure.repair.statuss }
+          : procedure
+      );
+      setRepairProcedures(updatedProcedures);
     } catch (error) {
       console.error(error.message);
     }
@@ -68,9 +75,8 @@ const RepairScreen = () => {
 
   return (
     <div className="container mt-4">
-      <h1>Repair requests</h1>
+      <h1>Repair Requests</h1>
       <hr />
-      <br />
       <InputGroup className="mb-3">
         <FormControl
           placeholder="Search by Claim ID"
@@ -93,54 +99,47 @@ const RepairScreen = () => {
       </InputGroup>
 
       {loading ? (
-        <div>Loading...</div>
+        <div className="text-center my-4">
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </div>
       ) : (
-        <div className="repair-procedures-container row gap-4">
-          {filteredRepairProcedures.map((repairProcedure, index) => (
-            <div
-              className="repair-procedure-container"
-              key={repairProcedure._id}
-            >
-              <div className="repair-procedure-header d-flex justify-content-between align-items-center">
-                <div>Reference</div>
-                <div>{repairProcedure._id}</div>
-              </div>
-              <div className="repair-procedure-header d-flex justify-content-between align-items-center">
-                <div>Status</div>
-                <div className="claim-status">
-                  {repairProcedure.statuss === "done" ? (
-                    <span className="badge bg-success">Done</span>
-                  ) : (
-                    <span className="badge bg-warning">In repair</span>
-                  )}
+        <div className="repair-procedures-container row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {filteredRepairProcedures.map((repairProcedure) => (
+            <div className="col" key={repairProcedure._id}>
+              <div className="card h-100">
+                <div className="card-header d-flex justify-content-around">
+                  <span>Reference: {repairProcedure._id}</span>
+                  <span className="badge">
+                    {repairProcedure.statuss === "done" ? (
+                      <span className="badge bg-success">Done</span>
+                    ) : (
+                      <span className="badge bg-warning">In repair</span>
+                    )}
+                  </span>
                 </div>
-              </div>
-              <hr />
-              <div className="repair-procedure-body">
-                <div className="product-image">
+                <div className="card-body p-2">
                   <img
-                    width={90 + "%"}
+                    className="card-img-top mb-3"
                     src={repairProcedure.Product.image}
                     alt="Product"
+                    style={{ objectFit: "contain", height: "150px" }}
                   />
+                  <h5 className="card-title">Defect Description</h5>
+                  <p className="card-text">{repairProcedure.ProductClaim.description}</p>
                 </div>
-                <div className="defect-description">
-                  <div className="repair-procedure-subtitle">
-                    Defect description
-                  </div>
-                  <p>{repairProcedure.ProductClaim.description}</p>
+                <div className="card-footer text-end">
+                  <Button
+                    variant="primary"
+                    disabled={repairProcedure.statuss === "done"}
+                    onClick={() =>
+                      updateRepairProcedureStatus(repairProcedure._id, "done")
+                    }
+                  >
+                    Mark as Repaired
+                  </Button>
                 </div>
-              </div>
-              <div className="repair-procedure-footer d-flex justify-content-end align-items-center">
-                <Button
-                  variant="primary"
-                  disabled={repairProcedure.statuss === "done"}
-                  onClick={() =>
-                    updateRepairProcedureStatus(repairProcedure._id, "done")
-                  }
-                >
-                  Mark as repaired
-                </Button>
               </div>
             </div>
           ))}

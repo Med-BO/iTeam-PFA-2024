@@ -19,6 +19,12 @@ const updateRepairStatus = asyncHandler(async (req, res) => {
   repair.statuss = status;
   await repair.save();
 
+  if (status === "done") {
+    const productClaim = await ProductClaim.findById(repair.ProductClaim);
+    productClaim.statuss = "repair_complete";
+    await productClaim.save();
+  }
+
   res
     .status(200)
     .json({ message: "Repair status updated successfully.", repair });

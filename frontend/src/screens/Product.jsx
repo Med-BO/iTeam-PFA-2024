@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, Container, Row, Col, Card } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
+import "react-toastify/dist/ReactToastify.css";
+import "./Product.css"; // Assuming you have a CSS file for custom styles
 
 const Product = () => {
   const today = new Date();
@@ -32,7 +34,8 @@ const Product = () => {
     setShow(false);
     setshowProductModal(false);
     setShowInsuranceAccountModal(false);
-  }
+  };
+
   const handleShow = (productId) => {
     setShow(true);
     setProductIdToBuy(productId);
@@ -41,18 +44,17 @@ const Product = () => {
   const handleShowProductModal = () => {
     setShow(false);
     setInsurancePrice(ppd * (endDate - startDate) / (1000 * 60 * 60 * 24));
-    setProductToBuyName(product.find(p => p._id === productIdToBuy).name);
-    setProductToBuyPrice(product.find(p => p._id === productIdToBuy).price);
+    const selectedProduct = product.find(p => p._id === productIdToBuy);
+    setProductToBuyName(selectedProduct.name);
+    setProductToBuyPrice(selectedProduct.price);
     setshowProductModal(true);
   };
 
-  // here we receive the sent value from the precedent screen
   const { state } = useLocation();
   const categoryIdRef = useRef("");
   const categoryNameRef = useRef("");
 
   useEffect(() => {
-    // here we update the value after it's received from the previous screen
     categoryIdRef.current = state?.categoryId || "";
     categoryNameRef.current = state?.categoryName || "";
     const userJsonString = localStorage.getItem("userInfo");
@@ -63,17 +65,15 @@ const Product = () => {
   const formatDateToDDMMYYYY = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const month = String(d.getMonth() + 1).padStart(2, '0');
     const year = d.getFullYear();
-  
+
     return `${day}/${month}/${year}`;
   };
 
   const getProduct = async () => {
     try {
-      const result = await fetch(
-        `http://localhost:5000/api/product/category/${categoryIdRef.current}`
-      );
+      const result = await fetch(`http://localhost:5000/api/product/category/${categoryIdRef.current}`);
       if (!result.ok) {
         throw new Error("Failed to fetch");
       }
@@ -109,20 +109,18 @@ const Product = () => {
       }
 
       toast.success('Product was successfully bought');
-      // decrease the stock quantity for that product
       const updatedProduct = product.find(p => p._id === productIdToBuy);
       updatedProduct.stock_quantity -= 1;
       setProduct([...product.filter(p => p._id !== productIdToBuy), updatedProduct]);
 
       const data = await response.json();
       if (data.insuranceAccount) {
-        toast.success(`Insurance account created: ${data.insuranceAccount.email} - ${data.insuranceAccount.password}`);
+        toast.success(`Insurance account created`);
+        setInsuranceAccount(data.insuranceAccount);
+        setShowInsuranceAccountModal(true);
       }
-      setInsuranceAccount(data.insuranceAccount)
-      setShowInsuranceAccountModal(true)
     } catch (error) {
       console.error('Error while authenticating:', error.message);
-      // setLoading(false)
     }
   };
 
@@ -133,48 +131,40 @@ const Product = () => {
 
   const skipToProductBuy = () => {
     setShow(false);
-    setShow(false);
-    setInsurancePrice(ppd * (endDate - startDate) / (1000 * 60 * 60 * 24));
-    setProductToBuyName(product.find(p => p._id === productIdToBuy).name);
-    setProductToBuyPrice(product.find(p => p._id === productIdToBuy).price);
+    setInsurancePrice(0);
+    setContractType("none");
+    const selectedProduct = product.find(p => p._id === productIdToBuy);
+    setProductToBuyName(selectedProduct.name);
+    setProductToBuyPrice(selectedProduct.price);
     setshowProductModal(true);
-  }
+  };
 
   return (
-    <div className="main-container">
-      <h2>{categoryNameRef.current}</h2>
-      <div className="card-container">
-        {error && <div>Error: {error.message}</div>}
+    <Container className="main-container">
+      <h2 className="text-center my-4">{categoryNameRef.current}</h2>
+      <Row className="card-container">
+        {error && <div className="alert alert-danger">Error: {error.message}</div>}
         {product.map((item, index) => (
-          <div key={index} className="card">
-            <img src={item.image} alt="Card Image" className="card-img" />
-            <h1 className="card-name">{item.name}</h1>
-            <p className="card-description">price: {item.price}</p>
-            <div>
-              stock quantity:{" "}
-              {item ? (
-                <span
-                  className={`card-description-stock ${
-                    item.stock_quantity > 0 ? "green" : "red"
-                  }`}
-                >
-                  {item.stock_quantity > 0 ? item.stock_quantity : "Out of stock"}
-                </span>
-              ) : (
-                <span className="card-description-stock red">Out of stock</span>
-              )}
-            </div>
-            <br />
-            <Button
-              className="card-button"
-              variant="primary"
-              onClick={() => handleShow(item._id)}
-            >
-              Buy
-            </Button>
-          </div>
+          <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            <Card className="h-100">
+              <Card.Img variant="top" src={item.image} alt="Card Image" className="card-img-top" />
+              <Card.Body>
+                <Card.Title className="card-name">{item.name}</Card.Title>
+                <Card.Text className="card-description">Price: {item.price}</Card.Text>
+                <Card.Text>
+                  Stock Quantity:{" "}
+                  <span className={`card-description-stock ${item.stock_quantity > 0 ? "text-success" : "text-danger"}`}>
+                    {item.stock_quantity > 0 ? item.stock_quantity : "Out of stock"}
+                  </span>
+                </Card.Text>
+                <Button className="card-button" variant="primary" onClick={() => handleShow(item._id)}>
+                  Buy
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </div>
+      </Row>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Insurance</Modal.Title>
@@ -188,7 +178,7 @@ const Product = () => {
                 </div>
                 <div className="col-auto">
                   <span className="text-uppercase text-secondary">
-                    Insurance information
+                    Insurance Information
                   </span>
                 </div>
                 <div className="col">
@@ -196,88 +186,81 @@ const Product = () => {
                 </div>
               </div>
             </div>
-            <div className="form-row row">
-              <div className="form-group col-md-6">
-                <label htmlFor="inputEmail4">Insurance Type</label>
-                <Form.Select name="contract-type" onChange={(e) => setContractType(e.target.value)}>
-                  <option value="none">Select a type</option>
-                  <option value="premium">Premium</option>
-                  <option value="smartphone">Smartphone</option>
-                  <option value="universal">Universal</option>
-                </Form.Select>
-              </div>
-              <br />
-              <div className="form-group col-md-6">
-                <label htmlFor="inputPassword4">Price/Day</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword4"
-                  value={ppd}
-                  onChange={(e) => setPpd(e.target.value)}
-                />
-                <br />
-              </div>
-              <br />
-              <div className="form-group">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
+            <Row className="form-row">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Insurance Type</Form.Label>
+                  <Form.Select name="contract-type" onChange={(e) => setContractType(e.target.value)}>
+                    <option value="none">Select a type</option>
+                    <option value="premium">Premium</option>
+                    <option value="smartphone">Smartphone</option>
+                    <option value="universal">Universal</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Price/Day</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={ppd}
+                    onChange={(e) => setPpd(e.target.value)}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={12}>
+                <Form.Group className="form-check">
+                  <Form.Check
                     type="checkbox"
-                    id="gridCheck"
+                    label="Steal protection"
                     checked={stealProtection}
                     onChange={(e) => setStealProtection(e.target.checked)}
                   />
-                  <label className="form-check-label" htmlFor="gridCheck">
-                    Steal protection
-                  </label>
-                </div>
-                <div>
-                  <div className="row">
-                    <div className="container my-4 mb-0">
-                      <div className="row">
-                        <div className="col">
-                          <hr className="border-top border-dark" />
-                        </div>
-                        <div className="col-auto">
-                          <span className="text-uppercase text-secondary">
-                            Duration
-                          </span>
-                        </div>
-                        <div className="col">
-                          <hr className="border-top border-dark" />
-                        </div>
-                      </div>
-                    </div>
-                    <br />
-                    <div className="col-md-6">
-                      <label>Start Date</label>{" "}
-                      <DatePicker
-                        className="form-control"
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                      />
-                    </div>
-                    <br />
-                    <div className="col-md-6">
-                      <label>End Date</label>{" "}
-                      <DatePicker
-                        className="form-control"
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                      />
-                    </div>
+                </Form.Group>
+              </Col>
+              <div className="container my-4 mb-0">
+                <div className="row">
+                  <div className="col">
+                    <hr className="border-top border-dark" />
+                  </div>
+                  <div className="col-auto">
+                    <span className="text-uppercase text-secondary">
+                      Duration
+                    </span>
+                  </div>
+                  <div className="col">
+                    <hr className="border-top border-dark" />
                   </div>
                 </div>
               </div>
-            </div>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Start Date</Form.Label>
+                  <DatePicker
+                    className="form-control"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>End Date</Form.Label>
+                  <DatePicker
+                    className="form-control"
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => skipToProductBuy()}>
+          <Button variant="secondary" onClick={skipToProductBuy}>
             Skip
           </Button>
-          <Button variant="primary" onClick={() => handleShowProductModal()}>
+          <Button variant="primary" onClick={handleShowProductModal}>
             Next
           </Button>
         </Modal.Footer>
@@ -287,31 +270,21 @@ const Product = () => {
           <Modal.Title>Confirm Buy</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="">
-            <div className="d-flex w-100 justify-content-between align-items-center">
+          <div>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>Product</div>
               <div>
-                Product
-              </div>
-              <div>
-                {productToBuyName} - <b>{ productToBuyPrice } TND</b>
+                {productToBuyName} - <b>{productToBuyPrice} TND</b>
               </div>
             </div>
             <div className="d-flex justify-content-between align-items-center">
-              <div>
-                Insurance
-              </div>
-              <div>
-                { insurancePrice } TND
-              </div>
+              <div>Insurance</div>
+              <div>{insurancePrice} TND</div>
             </div>
             <hr />
             <div className="d-flex justify-content-between align-items-center">
-              <div>
-                Total
-              </div>
-              <div>
-                { productToBuyPrice + insurancePrice } TND
-              </div>
+              <div>Total</div>
+              <div>{productToBuyPrice + insurancePrice} TND</div>
             </div>
           </div>
         </Modal.Body>
@@ -329,25 +302,15 @@ const Product = () => {
           <Modal.Title>Insurance Account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="">
-            <div className="subtitle">
-              Your account credentials
+          <div>
+            <div className="subtitle">Your account credentials</div>
+            <div className="d-flex justify-content-between align-items-center">
+              <div>Email:</div>
+              <div>{insuranceAccount.email}</div>
             </div>
             <div className="d-flex justify-content-between align-items-center">
-              <div>
-                Email:
-              </div>
-              <div>
-                {insuranceAccount.email}
-              </div>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                Password:
-              </div>
-              <div>
-                {insuranceAccount.password}
-              </div>
+              <div>Password:</div>
+              <div>{insuranceAccount.password}</div>
             </div>
           </div>
         </Modal.Body>
@@ -357,7 +320,7 @@ const Product = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </Container>
   );
 };
 

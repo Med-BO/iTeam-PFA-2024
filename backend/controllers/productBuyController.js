@@ -53,7 +53,6 @@ const BuyProduct = asyncHandler(async (req, res) => {
         email: user.insuranceEmail,
         password: user.insurancePassword
       }
-      user.has_bought = true;
       await user.save();
     }
     const product = await ProductModel.findById(Product);
@@ -67,10 +66,17 @@ const BuyProduct = asyncHandler(async (req, res) => {
       throw new Error("Invalid quantity value");
     }
     await product.save();
-    res.status(201).json({
-      "productBuy": productBuy,
-      "insuranceAccount": insuranceAccount
-    });
+    if (hasInsurance && user.has_bought == false) {
+      user.has_bought = true;
+      res.status(201).json({
+        "productBuy": productBuy,
+        "insuranceAccount": insuranceAccount
+      });
+    } else {
+      res.status(201).json({
+        "productBuy": productBuy
+      });
+    }
   } else {
     res.status(400);
     throw new Error("Invalid product data");

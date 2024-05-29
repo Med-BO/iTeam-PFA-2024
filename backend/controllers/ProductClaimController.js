@@ -30,6 +30,37 @@ const getClaimsByUser = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllClaims = asyncHandler(async (req, res) => {
+  try {
+    // Retrieve all claims from the ProductClaim collection
+    const productClaims = await ProductClaim.find();
+    if (!productClaims) {
+      return res.status(400).json({ message: "Error in getting claims" });
+    }
+
+    // Use map and Promise.all to handle asynchronous operations
+    const updatedClaims = await Promise.all(
+      productClaims.map(async (claim) => {
+        if (claim.Product) {
+          const product = await Product.findById(claim.Product);
+          claim.Product = product;
+        }
+        if (claim.User) {
+          const user = await mongoose.model("User").findById(claim.User);
+          claim.User = user;
+        }
+        return claim;
+      })
+    );
+
+    // Return the updated claims
+    res.status(200).json(updatedClaims);
+  } catch (error) {
+    // Handle errors
+    res.status(500).json({ message: error.message });
+  }
+});
+
 const createProductClaim = asyncHandler(async (req, res) => {
   const { description, type, Product, User } = req.body;
 
@@ -55,4 +86,31 @@ const createProductClaim = asyncHandler(async (req, res) => {
   }
 });
 
-export { getClaimsByUser, createProductClaim };
+const updateClaimStatus = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+  const validStatuses = ["rejected", "in_repair", "done"];
+
+  // Validate the new status
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ message: "Invalid status" });
+  }
+
+  try {
+    const productClaim = await ProductClaim.findById(req.params.id);
+
+    if (!productClaim) {
+      return res.status(404).json({ message: "Product claim not found" });
+    }
+
+    // Update the status
+    productClaim.statuss = status;
+    const updatedProductClaim = await productClaim.save();
+
+    res.status(200).json(updatedProductClaim);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+export { getClaimsByUser, createProductClaim, getAllClaims, updateClaimStatus };

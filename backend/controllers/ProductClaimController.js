@@ -14,13 +14,15 @@ const getClaimsByUser = asyncHandler(async (req, res) => {
     }
 
     // Use map and Promise.all for handling asynchronous operations
-    const updatedClaims = await Promise.all(productClaims.map(async (claim) => {
-      if (claim.Product) {
-        const product = await Product.findById(claim.Product);
-        claim.Product = product;
-      }
-      return claim;
-    }));
+    const updatedClaims = await Promise.all(
+      productClaims.map(async (claim) => {
+        if (claim.Product) {
+          const product = await Product.findById(claim.Product);
+          claim.Product = product;
+        }
+        return claim;
+      })
+    );
 
     res.status(200).json(updatedClaims);
   } catch (error) {
@@ -28,5 +30,29 @@ const getClaimsByUser = asyncHandler(async (req, res) => {
   }
 });
 
+const createProductClaim = asyncHandler(async (req, res) => {
+  const { description, type, Product, User } = req.body;
 
-export { getClaimsByUser };
+  // Validate required fields
+  if (!description || !Product || !User) {
+    return res
+      .status(400)
+      .json({ message: "Please provide all required fields" });
+  }
+
+  try {
+    const productClaim = new ProductClaim({
+      description,
+      type,
+      Product,
+      User,
+    });
+
+    const createdProductClaim = await productClaim.save();
+    res.status(201).json(createdProductClaim);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+export { getClaimsByUser, createProductClaim };

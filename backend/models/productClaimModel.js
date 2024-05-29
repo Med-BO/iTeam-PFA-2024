@@ -13,6 +13,7 @@ const productClaimSchema = mongoose.Schema(
     statuss: {
       type: String,
       enum: ["pending", "rejected", "in_repair", "done"],
+      default: "pending"
     },
     Product: {
       type: mongoose.Schema.Types.ObjectId,

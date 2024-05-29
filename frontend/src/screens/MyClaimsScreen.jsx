@@ -1,11 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
-import { useUpdateUserMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
+
 import { toast } from "react-toastify";
 import './MyClaimsScreen.css';
 import { useNavigate } from 'react-router-dom';
@@ -90,6 +86,8 @@ const MyclaimsScreen = () => {
                 </div>
               </div>
               <div className="card-body">
+              <div className="subtitle">Type</div>
+                <p>{item.type}</p>
                 <div className="subtitle">Overview</div>
                 <p>{item.description}</p>
               </div>

@@ -7,8 +7,13 @@ import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import "./MyContractsScreen.css";
 import { FaFileAlt } from "react-icons/fa";
-import { Button, Modal, Form, ButtonGroup, ToggleButton } from "react-bootstrap";
-import Product from "./Product";
+import {
+  Button,
+  Modal,
+  Form,
+  ButtonGroup,
+  ToggleButton,
+} from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 
 const MyContractsScreen = () => {
@@ -17,14 +22,13 @@ const MyContractsScreen = () => {
   const [contracts, setContracts] = useState([]);
   const [show, setShow] = useState(false);
   const [activeProduct, setActiveProduct] = useState({});
-  const [radioValue, setRadioValue] = useState('1');
+  const [radioValue, setRadioValue] = useState("1");
   const today = new Date();
 
   const radios = [
-    { name: 'Stolen', value: 'stolen' },
-    { name: 'Broken', value: 'broken' }
+    { name: "Stolen", value: "stolen" },
+    { name: "Broken", value: "broken" },
   ];
-
 
   useEffect(() => {
     const userJsonString = localStorage.getItem("userInfo");
@@ -139,13 +143,13 @@ const MyContractsScreen = () => {
                   <button
                     className="btn btn-primary"
                     onClick={() => {
-                      if (canAddClaim) {
+                      if (!canAddClaim) {
                         openAddClaimModal(item.Product);
                       }
                     }}
                     // disabled={!canAddClaim}
-                    data-tooltip-id={canAddClaim ? "" : "my-tooltip"}
-                    data-tooltip-content={canAddClaim ? "" : tooltipMessage}
+                    data-tooltip-id={!canAddClaim ? "" : "my-tooltip"}
+                    data-tooltip-content={!canAddClaim ? "" : tooltipMessage}
                   >
                     Add Claim
                   </button>
@@ -178,7 +182,7 @@ const MyContractsScreen = () => {
               </div>
             </div>
             <div className="form-row row">
-              <div className="form-group col-md-6">
+              <div className="form-group d-flex justify-content-between align-items-center">
                 <label htmlFor="inputEmail4">Issue Type</label>
                 <ButtonGroup>
                   {radios.map((radio, idx) => (
@@ -197,7 +201,26 @@ const MyContractsScreen = () => {
                   ))}
                 </ButtonGroup>
               </div>
-              <br />
+              <br/>
+              <div className="container my-4 mt-3 mb-2">
+              <div>
+
+  
+                <div className="col">
+                  <hr className="border-top border-dark" />
+                </div>
+              </div>
+            </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">
+                  Description
+                </label>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                ></textarea>
+              </div>
             </div>
           </Form>
         </Modal.Body>

@@ -78,8 +78,12 @@ const MyclaimsScreen = () => {
                 <div className="claim-status">
                   {item.statuss === "pending" ? (
                     <span className="badge bg-warning">Pending</span>
-                  ) : item.statuss === "approved" ? (
-                    <span className="badge bg-success">Approved</span>
+                  ) : item.statuss === "done" ? (
+                    <span className="badge bg-success">Done</span>
+                  ) : item.statuss === "in_repair" ? (
+                    <span className="badge bg-info">In repair</span>
+                  ) : item.statuss === "repair_complete" ? (
+                    <span className="badge bg-info">Repair complete</span>
                   ) : (
                     <span className="badge bg-danger">Rejected</span>
                   )}

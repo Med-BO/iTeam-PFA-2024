@@ -11,6 +11,7 @@ import productRoutes from './routes/productRoutes.js';
 import productInsuranceRoutes from './routes/productInsuranceRoutes.js';
 import productClaimRoutes from './routes/productClaimRoutes.js';
 import productBuyRoutes from './routes/productBuyRoutes.js';
+import repairProcedureRoutes from './routes/repairProcedureRoutes.js';
 
 import cors from 'cors';
 
@@ -41,6 +42,7 @@ app.use('/api/product', productRoutes);
 app.use('/api/insurance', productInsuranceRoutes);
 app.use('/api/claims', productClaimRoutes);
 app.use('/api/Buy', productBuyRoutes);
+app.use('/api/repair_procedure', repairProcedureRoutes); 
 
 
 

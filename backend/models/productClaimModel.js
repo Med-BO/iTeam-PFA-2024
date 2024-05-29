@@ -12,7 +12,7 @@ const productClaimSchema = mongoose.Schema(
     },
     statuss: {
       type: String,
-      enum: ["pending", "rejected", "in_repair", "done"],
+      enum: ["pending", "rejected", "in_repair", "repair_complete", "done"],
       default: "pending"
     },
     Product: {

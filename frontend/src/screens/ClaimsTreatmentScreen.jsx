@@ -91,6 +91,8 @@ const ClaimsTreatmentScreen = () => {
                       <span className="badge bg-success">Done</span>
                     ) : claim.statuss === "in_repair" ? (
                       <span className="badge bg-info">In repair</span>
+                    ) : claim.statuss === "repair_complete" ? (
+                      <span className="badge bg-info">Repair complete</span>
                     ) : (
                       <span className="badge bg-danger">Rejected</span>
                     )}

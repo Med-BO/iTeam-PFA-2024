@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
 import ProductClaim from "../models/productClaimModel.js";
 import Product from "../models/productModel.js";
+import RepairProcedure from "../models/repairProcedureModel.js";
 
 const app = express();
 
@@ -105,6 +106,22 @@ const updateClaimStatus = asyncHandler(async (req, res) => {
     // Update the status
     productClaim.statuss = status;
     const updatedProductClaim = await productClaim.save();
+    if (status === "in_repair") {
+      let repairProcedure = await RepairProcedure.findOne({ ProductClaim: productClaim._id });
+
+      if (!repairProcedure) {
+        repairProcedure = new RepairProcedure({
+          statuss: "pending",
+          Product: productClaim.Product,
+          ProductClaim: productClaim._id,
+        });
+
+        await repairProcedure.save();
+      } else {
+        repairProcedure.statuss = "pending";
+        await repairProcedure.save();
+      }
+    }
 
     res.status(200).json(updatedProductClaim);
   } catch (error) {

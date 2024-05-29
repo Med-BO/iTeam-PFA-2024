@@ -1,0 +1,12 @@
+.repair-procedure-container {
+    width: 30%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(51, 117, 134);
+    color: white;
+}
+
+.repair-procedure-subtitle {
+    color: rgb(232, 234, 234);
+    font-size: small;
+}
